@@ -1,4 +1,4 @@
-/*  Min Number of Moves to Make a Palindrome
+/*  Minimum Insertion Steps to Make a String Palindrome
   Link : https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/
 */
 class Solution {
