@@ -1,0 +1,26 @@
+/* Best Time to Buy and Sell Stock IV
+   Link : https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/
+*/
+class Solution {
+public:
+    int dp[2][101][1001];
+    
+    int helper(vector<int>&prices , int day , int k , int i){
+        if(k==0 or i==prices.size()) return 0;
+        if(dp[day][k][i]!=-1) return dp[day][k][i];
+        int posAns=0;
+        if(day==1) // sell today
+            posAns=max(posAns,prices[i]+helper(prices,0,k-1,i+1));    
+        else // buy today
+            posAns=max(posAns,-prices[i]+helper(prices,1,k,i+1));
+    
+        // do nothing today
+        posAns=max(posAns,helper(prices,day,k,i+1));    
+        return dp[day][k][i]=posAns;              
+    }
+    
+    int maxProfit(int k, vector<int>& prices) {
+        memset(dp,-1,sizeof dp);
+        return helper(prices,0,k,0);
+    }
+};
