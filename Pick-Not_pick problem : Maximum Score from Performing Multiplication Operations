@@ -1,0 +1,21 @@
+/*  Maximum Score from Performing Multiplication Operations
+    Link : https://leetcode.com/problems/maximum-score-from-performing-multiplication-operations/
+*/
+
+class Solution {
+public:
+    vector<vector<int>>dp;
+    int helper(vector<int>&nums , int left_pick , vector<int>& multipliers , int total_pick){
+        if(total_pick==multipliers.size()) return 0;
+        int right_pick=nums.size()-1-(total_pick-left_pick);
+        if(dp[left_pick][total_pick]!=INT_MIN) return dp[left_pick][total_pick];
+        int ans1=multipliers[total_pick]*nums[left_pick]+helper(nums,left_pick+1,multipliers,total_pick+1);
+        int ans2=multipliers[total_pick]*nums[right_pick]+helper(nums,left_pick,multipliers,total_pick+1);
+        return dp[left_pick][total_pick]=max(ans1,ans2);
+    }
+    
+    int maximumScore(vector<int>& nums, vector<int>& multipliers) {
+        dp.resize(1001,vector<int>(1001,INT_MIN));
+        return helper(nums,0,multipliers,0);
+    }
+};
