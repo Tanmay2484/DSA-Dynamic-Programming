@@ -1,0 +1,23 @@
+/* Maximum Length of Repeated Subarray
+   Link : https://leetcode.com/problems/maximum-length-of-repeated-subarray/
+*/
+class Solution {
+public:
+    
+    int findLength(vector<int>& nums1, vector<int>& nums2) {
+    int n=nums1.size(),m=nums2.size(),ans=0;//space optimized space=O(n),time-comp=o(mn)
+        vector<int>dp_prev(n+1,0);
+        for(int i=1;i<=n;i++){
+            vector<int>dp_cur(n+1,0);
+            for(int j=1;j<=m;j++){
+                if(nums1[i-1]==nums2[j-1]) 
+                    dp_cur[j]=1+dp_prev[j-1];
+                else 
+                    dp_cur[j]=0;
+            ans=max(ans,dp_cur[j]);
+          }
+            dp_prev=dp_cur;//setting the previous with current vector
+        }
+        return ans;
+    }
+};
