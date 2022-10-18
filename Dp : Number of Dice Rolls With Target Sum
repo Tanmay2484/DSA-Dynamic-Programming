@@ -1,0 +1,36 @@
+/* Number of Dice Rolls With Target Sum
+   Link :https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/description/
+*/
+class Solution {
+public:
+    
+    int MOD = 1e9+7;
+    
+    int no_of_ways(int k, int n, int num, int target, int cur, vector<vector<int>> &dp){
+        
+        if(n==num and target!=cur) return 0;
+        
+        if(n==num and target==cur) return 1;
+        
+        if(dp[cur][num]!=-1) return dp[cur][num];
+        
+        long long total = 0;
+        
+        for(int i=1;i<=k;i++){
+            
+            total+=no_of_ways(k, n, num+1, target, cur+i, dp);
+            
+        }
+        
+        return dp[cur][num]=total%MOD;
+        
+    }
+    
+    
+    int numRollsToTarget(int n, int k, int target) {
+        
+        vector<vector<int>> dp(1001, vector<int> (n+1, -1));//here the dp array
+        return no_of_ways(k, n, 0, target, 0, dp);
+        
+    }
+};
