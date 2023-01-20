@@ -1,0 +1,34 @@
+/* 491. Non-decreasing Subsequences
+  Link: https://leetcode.com/problems/non-decreasing-subsequences/description/
+*/
+class Solution {
+public:
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        vector<vector<int>>res;
+        vector<vector<vector<int>>>dp(nums.size());
+        set<vector<int>>s;
+        for(int i=0;i<nums.size();i++){
+            vector<vector<int>>v;
+            v.push_back({nums[i]});
+            for(int j=0;j<i;j++){
+                // j->i
+                if(nums[j]<=nums[i]){
+                    for(auto a:dp[j]){
+                        a.push_back(nums[i]);
+                        v.push_back(a);
+                    }
+                }
+            }
+            dp[i]=v;
+            
+            for(auto a:dp[i])
+                if(a.size()>=2) s.insert(a);
+        }
+        
+        for(auto p:s)
+            res.push_back(p);
+        
+        return res;
+        
+    }
+};
