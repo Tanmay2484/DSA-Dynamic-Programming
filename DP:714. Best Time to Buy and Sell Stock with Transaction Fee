@@ -1,0 +1,36 @@
+/* 714. Best Time to Buy and Sell Stock with Transaction Fee
+Link: https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/description/
+*/
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices, int fee) {
+        
+        int n = prices.size();
+        if(n<2) return 0;
+        
+        // Stock state machine has 2 states: buy stock, sell stock
+        // We can arrive in to buy state from previous buy or sell state
+            // From sell state to buy state we loose money to buy the stock and so profit = sell - prices[i]
+            // From buy state to buy state we just take the previous buy profit forward
+        // We can arrive in to sell state from previous buy or sell state
+            // From buy state to sell state we gain money by selling the stock  with negative fee and so profit = buy + prices[i] - fee
+            // From sell state to sell state we just take the previous sell profit forward
+        
+        // To achive max profit we always want to maximize sell and buy profit
+
+		// Intially we have no previous stock and so our sell profit = 0 and buy profit = -prices[0]
+        int sell = 0;
+        int buy = -prices[0];
+        
+        for(int i=1;i<n;i++)
+        {
+            // We must sell the stock before buying again 
+            sell = max(sell, buy + prices[i] - fee);
+            buy = max(buy, sell-prices[i]);
+        }
+        
+        // final maximum profit after selling the last stock
+        return sell;
+    }
+};
