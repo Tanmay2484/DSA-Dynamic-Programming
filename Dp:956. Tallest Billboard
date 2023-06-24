@@ -1,0 +1,37 @@
+/* 956. Tallest Billboard
+link: https://leetcode.com/problems/tallest-billboard/description/
+*/
+class Solution {
+public:
+    int tallestBillboard(vector<int>& rods) {
+		// For each rod r, 
+        // we can:
+        //     add (dp[i+r], means add to right side), 
+        //     minus (dp[i-r], means add to left side), 
+        //     or no ops (not using that rod)
+		// The meaning of dp[i] = val: 
+		// stands for after arrange (add rod to left, add rod to right, or not using the rod )the rods, 
+        // we have arranged_sum == i, and at the same time, the total sum of using those rods equals val.
+        //     if i > 0 it means the right is taller then left. 
+        //     if i < 0 it means the left is taller then right.
+        //     if i == 0 it means left and right are even height.
+        
+        // Our target is to get dp[0], which means the left side and right side are of equal length.
+        // However, we want to represent the dp as an array. Thus we offset the dp[0] to dp[5000]. (range from -5000~ +5000, and offset -5000 to zero. Thus totally 10001)
+        vector<int> dp(10001, -1);
+        dp[5000] = 0;
+        for(int r: rods){
+            vector<int> dp2 = dp;
+            for(int i = 0; i<dp.size(); i++){
+                if(dp[i]<0) continue;
+                // add rod to left side.
+                dp2[i-r] = max(dp2[i-r], dp[i]+r);
+                // add rod to right side.
+                dp2[i+r] = max(dp2[i+r], dp[i]+r);
+                // note that no ops is considered implicitly by copying the dp2 = dp.
+            }
+            swap(dp, dp2);
+        }
+        return dp[5000]/2;
+    }
+};
